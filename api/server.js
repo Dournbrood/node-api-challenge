@@ -31,7 +31,7 @@ server.get("/api/projects", (request, response) => {
 
 //POST to /api/projects
 server.post("/api/projects", (request, response) => {
-    ProjectDB.insert()
+    ProjectDB.insert(request.body)
         .then((newProject) => {
             response.status(201).json({ ...newProject });
         })
@@ -45,9 +45,11 @@ server.post("/api/projects", (request, response) => {
 server.put("/api/projects", validateProjectID, validateProject, (request, response) => {
     const { project_id, ...rest } = request.body;
 
+    console.log("uhh, here's stuff: ", project_id, rest);
+
     ProjectDB.update(project_id, rest)
         .then((updatedProject) => {
-            response.status(204).json({ ...updatedProject });
+            response.status(201).json({ ...updatedProject });
         })
         .catch((error) => {
             console.log("\n\n !!! ~ *** INTERNAL SERVER ERROR! *** ~ !!! \n\n", error);
@@ -69,10 +71,10 @@ server.delete("/api/projects", validateProjectID, (request, response) => {
 })
 
 //GET to /api/actions
-server.get("/api/actions", (request, response) => {
+server.get("/api/actions", validateActionID, (request, response) => {
     ActionDB.get()
         .then((actions) => {
-            response.send(200).json({ ...actions });
+            response.status(200).json({ ...actions });
         })
         .catch((error) => {
             console.log("\n\n !!! ~ *** INTERNAL SERVER ERROR! *** ~ !!! \n\n", error);
@@ -84,7 +86,7 @@ server.get("/api/actions", (request, response) => {
 server.post("/api/actions", validateAction, (request, response) => {
     ActionDB.insert(request.body)
         .then((newAction) => {
-            response.status(204).json({ ...newAction });
+            response.status(201).json({ ...newAction });
         })
         .catch((error) => {
             console.log("\n\n !!! ~ *** INTERNAL SERVER ERROR! *** ~ !!! \n\n", error);
@@ -95,7 +97,7 @@ server.post("/api/actions", validateAction, (request, response) => {
 //PUT to /api/actions
 server.put("/api/actions", validateProjectID, validateActionID, validateAction, (request, response) => {
     const { id, ...rest } = request.body;
-    ActionDB.update(id, ...rest)
+    ActionDB.update(id, rest)
         .then((updatedAction) => {
             response.status(200).json({ ...updatedAction });
         })
@@ -173,7 +175,7 @@ function validateActionID(request, response, next) {
             })
     }
     else {
-        response.send("Please provide a valid Project ID with your request!");
+        response.send("Please provide a valid Action ID with your request!");
     }
 }
 
