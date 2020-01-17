@@ -40,13 +40,23 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+    Using the express parser in general, and also using middleware.
+
 - [ ] Describe Middleware?
+
+    Middleware is some kind of software, be it third-party or our own, that performs actions/mutates data between when it is received from the client and when a response is sent back.
 
 - [ ] Describe a Resource?
 
+    A resource is anything in a database that is interactible via our API. Cows in a cow database, musicians in a music database, actions in an action database. These resources can be created, destroyed, read or consumed. CRUD.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+    STATUS CODES! 200 is a good cover-all, but there are more specific ones.
+
 - [ ] How can we partition our application into sub-applications?
+
+    Using routers and putting our custom middleware inside separate files from the endpoints. (I didn't do that, by the way.)
 
 ## Minimum Viable Product
 
