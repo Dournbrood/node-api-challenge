@@ -70,8 +70,20 @@ server.delete("/api/projects", validateProjectID, (request, response) => {
         })
 })
 
+//GET to /api/actions/individual
+server.get("/api/actions/individual", validateProjectID, (request, response) => {
+    ProjectDB.getProjectActions(request.body.project_id)
+        .then((actions) => {
+            response.status(200).json({ ...actions });
+        })
+        .catch((error) => {
+            console.log("\n\n !!! ~ *** INTERNAL SERVER ERROR! *** ~ !!! \n\n", error);
+            response.status(500).json({ message: "There was an internal error processing your request. Please scream at the devs until they fix this." });
+        })
+});
+
 //GET to /api/actions
-server.get("/api/actions", validateActionID, (request, response) => {
+server.get("/api/actions", (request, response) => {
     ActionDB.get()
         .then((actions) => {
             response.status(200).json({ ...actions });
@@ -80,7 +92,7 @@ server.get("/api/actions", validateActionID, (request, response) => {
             console.log("\n\n !!! ~ *** INTERNAL SERVER ERROR! *** ~ !!! \n\n", error);
             response.status(500).json({ message: "There was an internal error processing your request. Please scream at the devs until they fix this." });
         })
-})
+});
 
 //POST to /api/actions
 server.post("/api/actions", validateAction, (request, response) => {
